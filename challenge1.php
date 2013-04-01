@@ -7,15 +7,11 @@ namespace OpenCloud;
 require_once('rackspace.php');
 require_once('compute.php');
 
-#define('AUTHURL', RACKSPACE_US);
-#define('USERNAME', $_ENV['OS_USERNAME']);
-#define('TENANT', $_ENV['OS_TENANT_NAME']);
-#define('APIKEY', $_ENV['NOVA_API_KEY']);
+define('AUTHURL', RACKSPACE_US);
+define('USERNAME', $_ENV['OS_USERNAME']);
+define('TENANT', $_ENV['OS_TENANT_NAME']);
+define('APIKEY', $_ENV['NOVA_API_KEY']);
 
-define('AUTHURL', 'https://identity.api.rackspacecloud.com/v2.0/');
-define('USERNAME', 'robe4339');
-define('TENANT', '683020');
-define('APIKEY', '34f3feecc867c5fc41371edea5b31c58');
 
 /**
  * numbers each step
