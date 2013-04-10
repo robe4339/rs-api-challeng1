@@ -1,17 +1,13 @@
 <?php
 // (c)2012 Rackspace Hosting
 // See COPYING for licensing information
+// 
+
 
 namespace OpenCloud;
 
 require_once('rackspace.php');
 require_once('compute.php');
-
-define('AUTHURL', RACKSPACE_US);
-define('USERNAME', $_ENV['OS_USERNAME']);
-define('TENANT', $_ENV['OS_TENANT_NAME']);
-define('APIKEY', $_ENV['NOVA_API_KEY']);
-
 
 /**
  * numbers each step
@@ -31,16 +27,27 @@ function dot($server) {
 
 define('TIMEFORMAT', 'r');
 
+$inifile = $_SERVER['HOME'] . "/.rackspace_cloud_credentials";
+define('INIFILE', $inifile);
+$ini = parse_ini_file(INIFILE, TRUE);
+if (!$ini) {
+    printf("Unable to load .ini file [%s]\n", INIFILE);
+    exit;
+}
+
 
 // establish our credentials
 step('Authenticate');
-$connection = new Rackspace(AUTHURL,
-	array( 'username' => USERNAME,
-		   'apiKey' => APIKEY ));
+$connection = new Rackspace(
+		$ini['Identity']['url'],
+                array( 'username' => $ini['Identity']['username'],
+		       'tenantName' => $ini['Identity']['tenant'],
+		       'apiKey' => $ini['Identity']['apiKey']
+		 ));
 
 step('Connect to Cloud Servers');
 // now, connect to the compute service
-$compute = $connection->Compute('cloudServersOpenStack', 'DFW');
+$compute = $connection->Compute($ini['Compute']['serviceName'],$ini['Compute']['region']);
 
 /**
  * Let's build a server. We want to have an OS of CentOS 6.0 or higher and a
